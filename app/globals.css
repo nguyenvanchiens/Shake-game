@@ -1,0 +1,679 @@
+/* Reset và base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.cell {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  transition: background-color 0.1s ease, box-shadow 0.1s ease;
+}
+
+.snake-head {
+  background-color: green;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.snake-body {
+  background-color: lightgreen;
+}
+
+.food {
+  background-color: red;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.snake-dog-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
+
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Game container */
+.snake-game {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+}
+
+/* Game header */
+.game-header {
+  margin-bottom: 20px;
+}
+
+.game-header h1 {
+  font-size: 2.5rem;
+  color: #4a5568;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.snake-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  animation: snakeWiggle 2s infinite;
+}
+
+.snake-icon:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+@keyframes snakeWiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+.score {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2d3748;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Game board */
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  gap: 1px;
+  background: #2d3748;
+  border: 3px solid #4a5568;
+  border-radius: 10px;
+  margin: 0 auto 20px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Game cells */
+.cell {
+  background: #4a5568;
+  border-radius: 2px;
+  transition: all 0.1s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 18px;
+  min-width: 18px;
+}
+
+.cell.snake-head {
+  background: linear-gradient(45deg, #48bb78, #38a169);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(72, 187, 120, 0.5);
+  animation: pulse 1s infinite;
+}
+
+.cell.snake-body {
+  background: linear-gradient(45deg, #68d391, #48bb78);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(104, 211, 145, 0.3);
+}
+
+.cell.food {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+  animation: foodGlow 2s infinite;
+}
+
+/* Hình ảnh dog trong rắn */
+.snake-dog-image {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  animation: dogBounce 1.5s infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+@keyframes dogBounce {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes foodGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 107, 107, 0.9);
+  }
+}
+
+/* Game controls */
+.game-controls {
+  margin-bottom: 20px;
+}
+
+.start-btn, .pause-btn, .restart-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  margin: 5px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.start-btn:hover, .pause-btn:hover, .restart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.start-btn:active, .pause-btn:active, .restart-btn:active {
+  transform: translateY(0);
+}
+
+.control-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Game over overlay */
+.game-over {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.5s ease;
+}
+
+.game-over h2 {
+  color: #ff6b6b;
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.game-over p {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Instructions */
+.instructions {
+  background: rgba(74, 85, 104, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: left;
+  margin-top: 20px;
+}
+
+.instructions h3 {
+  color: #4a5568;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.instructions p {
+  color: #718096;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .snake-game {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .game-board {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .game-header h1 {
+    font-size: 2rem;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .snake-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .snake-dog-image {
+    border-width: 1px;
+    width: 85%;
+    height: 85%;
+  }
+  
+  .score {
+    font-size: 1.2rem;
+  }
+  
+  .control-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .start-btn, .pause-btn, .restart-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* High score animation */
+@keyframes scoreIncrease {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+    color: #48bb78;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.score.increase {
+  animation: scoreIncrease 0.3s ease;
+}
+
+/* Game Over Form */
+.game-over-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.5s ease;
+}
+
+.form-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 600px;
+  width: 95%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: slideInUp 0.6s ease;
+}
+
+.form-header {
+  margin-bottom: 30px;
+}
+
+.form-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: logoSpin 2s infinite;
+}
+
+.form-header h2 {
+  color: #fff;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: bounce 1s infinite;
+  white-space: nowrap;
+  overflow: visible;
+  min-width: fit-content;
+}
+
+.congratulations-text {
+  color: #f7fafc;
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.score-display {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.score-display h3 {
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.final-score {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: scoreGlow 2s infinite;
+}
+
+.player-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  transform: scale(1.02);
+}
+
+.form-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.save-btn, .restart-btn {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.save-btn {
+  background: linear-gradient(45deg, #48bb78, #38a169);
+  color: white;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+.restart-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.restart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Fireworks Animation */
+.fireworks-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1500;
+}
+
+.firework {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation: firework 3s infinite;
+}
+
+.firework-1 {
+  top: 20%;
+  left: 20%;
+  background: #ff6b6b;
+  animation-delay: 0s;
+}
+
+.firework-2 {
+  top: 30%;
+  right: 20%;
+  background: #4ecdc4;
+  animation-delay: 0.5s;
+}
+
+.firework-3 {
+  top: 50%;
+  left: 50%;
+  background: #45b7d1;
+  animation-delay: 1s;
+}
+
+.firework-4 {
+  bottom: 30%;
+  left: 30%;
+  background: #f9ca24;
+  animation-delay: 1.5s;
+}
+
+.firework-5 {
+  bottom: 20%;
+  right: 30%;
+  background: #6c5ce7;
+  animation-delay: 2s;
+}
+
+@keyframes firework {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes logoSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes scoreGlow {
+  0%, 100% {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px #ffd700, 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive cho form */
+@media (max-width: 768px) {
+  .form-card {
+    max-width: 550px;
+    width: 98%;
+    padding: 35px 25px;
+  }
+  
+  .form-header h2 {
+    font-size: 2.2rem;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-card {
+    padding: 30px 20px;
+    margin: 10px;
+    width: 98%;
+  }
+  
+  .form-header h2 {
+    font-size: 1.9rem;
+    white-space: nowrap;
+  }
+  
+  .final-score {
+    font-size: 2.5rem;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .save-btn, .restart-btn {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 360px) {
+  .form-header h2 {
+    font-size: 1.6rem;
+  }
+}
